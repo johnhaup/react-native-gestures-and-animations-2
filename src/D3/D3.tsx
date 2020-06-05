@@ -35,20 +35,27 @@ const Graph = () => {
     .curve(shape.curveBasis)(data);
   return (
     <View style={styles.container}>
-      <Svg {...{ width, height }}>
-        <Defs>
-          <LinearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="gradient">
-            <Stop stopColor="#CDE3F8" offset="0%" />
-            <Stop stopColor="#eef6fd" offset="80%" />
-            <Stop stopColor="#FEFFFF" offset="100%" />
-          </LinearGradient>
-        </Defs>
-        <Path fill="transparent" stroke="#367be2" strokeWidth={5} {...{ d }} />
-        <Path
-          d={`${d} L 0 ${height} L ${width} ${height} `}
-          fill="url(#gradient)"
-        />
-      </Svg>
+      <View>
+        <Svg {...{ width, height }}>
+          <Defs>
+            <LinearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="gradient">
+              <Stop stopColor="#CDE3F8" offset="0%" />
+              <Stop stopColor="#eef6fd" offset="80%" />
+              <Stop stopColor="#FEFFFF" offset="100%" />
+            </LinearGradient>
+          </Defs>
+          <Path
+            fill="transparent"
+            stroke="#367be2"
+            strokeWidth={5}
+            {...{ d }}
+          />
+          <Path
+            d={`${d} L 0 ${height} L ${width} ${height} `}
+            fill="url(#gradient)"
+          />
+        </Svg>
+      </View>
     </View>
   );
 };
