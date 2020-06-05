@@ -6,6 +6,7 @@ import Examples from "./Examples";
 import PanGesture from "./PanGesture";
 import Transitions from "./Transitions";
 import CircularSlider from "./CircularSlider";
+import D3 from "./D3";
 import Worklets from "./Worklets";
 
 const Stack = createStackNavigator<Routes>();
@@ -45,6 +46,13 @@ const AppNavigator = () => (
         component={CircularSlider}
         options={{
           title: "Circular Slider",
+        }}
+      />
+      <Stack.Screen
+        name="D3"
+        component={D3}
+        options={{
+          title: "D3",
         }}
       />
     </Stack.Navigator>

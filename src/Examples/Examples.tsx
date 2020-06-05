@@ -24,6 +24,10 @@ export const examples = [
     screen: "CircularSlider",
     title: "⭕️ Circular Slider",
   },
+  {
+    screen: "D3",
+    title: "📈 D3 Interactions",
+  },
 ] as const;
 
 const styles = StyleSheet.create({

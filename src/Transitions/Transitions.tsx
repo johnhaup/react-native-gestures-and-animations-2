@@ -4,6 +4,7 @@ import Animated, {
   useSharedValue,
   withTiming,
   useAnimatedStyle,
+  useDerivedValue,
 } from "react-native-reanimated";
 
 import { Button, Card, StyleGuide, cards } from "../components";
@@ -27,18 +28,18 @@ const origin = { x: -(width / 2 - StyleGuide.spacing * 2), y: 0 };
 
 const UseTransition = () => {
   const [toggled, setToggle] = useState(false);
-  const transition = useSharedValue(0);
+  const toggle = useSharedValue(0);
   useEffect(() => {
-    transition.value = toggled ? Math.PI / 6 : 0;
-  }, [toggled, transition.value]);
+    toggle.value = toggled ? 1 : 0;
+  }, [toggled, toggle.value]);
+  const transition = useDerivedValue(() => {
+    return withTiming(toggle.value);
+  });
   return (
     <View style={styles.container}>
       {cards.slice(0, 3).map((card, index) => {
         const style = useAnimatedStyle(() => {
-          const rotate = withTiming(
-            (index - 1) * mix(transition.value, 0, Math.PI / 6),
-            { duration: 500 }
-          );
+          const rotate = (index - 1) * mix(transition.value, 0, Math.PI / 6);
           return {
             transform: [
               { translateX: origin.x },
