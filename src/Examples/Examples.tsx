@@ -13,6 +13,10 @@ export const examples = [
     title: "👩‍🏭 Worklets",
   },
   {
+    screen: "Transitions",
+    title: "🔁 Transitions",
+  },
+  {
     screen: "PanGesture",
     title: "💳 PanGesture",
   },

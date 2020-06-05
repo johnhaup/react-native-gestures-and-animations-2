@@ -1,7 +1,7 @@
-import React, { createContext, useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 
-import Card, { Cards, CARD_WIDTH, CARD_HEIGHT } from "./Card";
+import { Card, Cards, CARD_WIDTH, CARD_HEIGHT } from "../components";
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
