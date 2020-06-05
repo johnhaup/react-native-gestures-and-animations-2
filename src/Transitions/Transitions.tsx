@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     padding: StyleGuide.spacing * 4,
   },
 });
-const newOrigin = -(width / 2 - StyleGuide.spacing * 2);
+const origin = { x: -(width / 2 - StyleGuide.spacing * 2), y: 0 };
 
 const UseTransition = () => {
   const [toggled, setToggle] = useState(false);
@@ -35,12 +35,15 @@ const UseTransition = () => {
     <View style={styles.container}>
       {cards.slice(0, 3).map((card, index) => {
         const style = useAnimatedStyle(() => {
-          const rotate = withTiming(transition.value, { duration: 2000 });
+          const rotate = withTiming(
+            (index - 1) * mix(transition.value, 0, Math.PI / 6),
+            { duration: 500 }
+          );
           return {
             transform: [
-              //  { translateX: newOrigin },
+              { translateX: origin.x },
               { rotate },
-              //{ translateX: -newOrigin },
+              { translateX: -origin.x },
             ],
           };
         });
