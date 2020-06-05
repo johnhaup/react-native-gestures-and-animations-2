@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
-import { ScaleLinear, ScaleTime, scaleLinear, scaleTime } from "d3-scale";
+import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
 const { width } = Dimensions.get("window");
@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
 });
 
