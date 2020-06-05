@@ -1,10 +1,19 @@
 import React from "react";
-import { View, Dimensions } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import { View, Dimensions, StyleSheet } from "react-native";
+import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { ScaleLinear, ScaleTime, scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
 const { width } = Dimensions.get("window");
+const height = width;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
 const data = [
   { x: new Date(2020, 5, 1), y: 5012 },
   { x: new Date(2020, 4, 1), y: 8677 },
@@ -16,19 +25,29 @@ const data = [
 
 const Graph = () => {
   const scaleX = scaleTime()
-    .domain([new Date(2020, 5, 1), new Date(2019, 12, 1)])
+    .domain([new Date(2019, 12, 1), new Date(2020, 5, 1)])
     .range([0, width]);
-  const scaleY = scaleLinear().domain([0, 4371]).range([width, 0]);
+  const scaleY = scaleLinear().domain([4371, 8677]).range([height, 0]);
   const d = shape
     .line()
     .x((d) => scaleX(d.x))
     .y((d) => scaleY(d.y))
     .curve(shape.curveBasis)(data);
-  console.log({ d });
   return (
-    <View>
-      <Svg width={width} height={width}>
-        <Path stroke="#3977e3" strokeWidth={5} {...{ d }} />
+    <View style={styles.container}>
+      <Svg {...{ width, height }}>
+        <Defs>
+          <LinearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="gradient">
+            <Stop stopColor="#CDE3F8" offset="0%" />
+            <Stop stopColor="#eef6fd" offset="80%" />
+            <Stop stopColor="#FEFFFF" offset="100%" />
+          </LinearGradient>
+        </Defs>
+        <Path fill="transparent" stroke="#367be2" strokeWidth={5} {...{ d }} />
+        <Path
+          d={`${d} L 0 ${height} L ${width} ${height} `}
+          fill="url(#gradient)"
+        />
       </Svg>
     </View>
   );
