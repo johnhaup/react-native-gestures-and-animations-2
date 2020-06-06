@@ -15,24 +15,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const data = [
+const data: [number, number][] = [
   { x: new Date(2020, 5, 1), y: 5012 },
   { x: new Date(2020, 4, 1), y: 8677 },
   { x: new Date(2020, 3, 1), y: 7188 },
   { x: new Date(2020, 2, 1), y: 5310 },
   { x: new Date(2020, 1, 1), y: 6198 },
   { x: new Date(2019, 12, 1), y: 4371 },
-];
+].map((p) => [p.x.getTime(), p.y]);
+
+const domain = {
+  x: [Math.min(...data.map(([x]) => x)), Math.max(...data.map(([x]) => x))],
+  y: [Math.min(...data.map(([, y]) => y)), Math.max(...data.map(([, y]) => y))],
+};
 
 const Graph = () => {
-  const scaleX = scaleTime()
-    .domain([new Date(2019, 12, 1), new Date(2020, 5, 1)])
-    .range([0, width]);
-  const scaleY = scaleLinear().domain([4371, 8677]).range([height, 0]);
+  const scaleX = scaleTime().domain(domain.x).range([0, width]);
+  const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
   const d = shape
     .line()
-    .x((d) => scaleX(d.x))
-    .y((d) => scaleY(d.y))
+    .x(([x]) => scaleX(x))
+    .y(([, y]) => scaleY(y))
     .curve(shape.curveBasis)(data);
   return (
     <View style={styles.container}>
