@@ -13,8 +13,8 @@ import Animated, {
   runOnUI,
 } from "react-native-reanimated";
 
-import { Button, StyleGuide } from "../components";
-import ReText from "../components/ReText";
+import { Button } from "../components";
+import { ReText } from "../components/AnimatedHelpers";
 
 const styles = StyleSheet.create({
   container: {

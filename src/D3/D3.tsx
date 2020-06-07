@@ -3,6 +3,7 @@ import { View, Dimensions, StyleSheet } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
+import { parsePath } from "../components/AnimatedHelpers";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -37,6 +38,7 @@ const Graph = () => {
     .x(([x]) => scaleX(x))
     .y(([, y]) => scaleY(y))
     .curve(shape.curveBasis)(data);
+  parsePath(d);
   return (
     <View style={styles.container}>
       <View>
