@@ -39,22 +39,21 @@ interface CursorProps {
 
 const Cursor = ({ path }: CursorProps) => {
   const point = getPointAtLength(path, 100);
-  const translate = useVector(point.x, point.y);
+  const translate = useVector(point.x - CURSOR / 2, point.y - CURSOR / 2);
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.offsetX = translate.x.value;
       ctx.offsetY = translate.y.value;
     },
     onActive: (event, ctx) => {
-      const x = ctx.offsetX + event.translationX;
+      const x0 = ctx.offsetX + event.translationX;
       const length = interpolate(
-        x,
+        x0,
         [0, width],
         [0, path.length],
         Extrapolate.CLAMP
       );
-      console.log({ length, total: path.length, ratio: length / path.length });
-      const { y } = getPointAtLength(path, length);
+      const { x, y } = getPointAtLength(path, length);
       translate.x.value = x - CURSOR / 2;
       translate.y.value = y - CURSOR / 2;
     },

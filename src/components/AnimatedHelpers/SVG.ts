@@ -1,11 +1,10 @@
 import parseSVG from "parse-svg-path";
 import absSVG from "abs-svg-path";
 import normalizeSVG from "normalize-svg-path";
-import { interpolate, Extrapolate } from "react-native-reanimated";
 
-import cubicBezierLength from "./bezier/CubicBezierLength";
 import { Vector } from "./Vector";
 import { cubicBezier } from "./Math";
+import { cubicBezierLength } from "./bezier";
 
 type SVGMove = ["M", number, number];
 type SVGCurve = ["C", number, number, number, number, number, number];
@@ -70,7 +69,7 @@ export const getPointAtLength = (path, length) => {
   const { start, end, from, to, c1, c2 } = path.curves.find(
     (c) => length >= c.start && length <= c.end
   );
-  const t = interpolate(length, [start, end], [0, 1], Extrapolate.CLAMP);
+  const t = (length - start) / (end - start);
   return {
     x: cubicBezier(t, from.x, c1.x, c2.x, to.x),
     y: cubicBezier(t, from.y, c1.y, c2.y, to.y),

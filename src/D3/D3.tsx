@@ -17,6 +17,12 @@ const data: [number, number][] = [
   { x: new Date(2020, 4, 1), y: 8677 },
   { x: new Date(2020, 5, 1), y: 5012 },
 ].map((p) => [p.x.getTime(), p.y]);
+
+const domain = {
+  x: [Math.min(...data.map(([x]) => x)), Math.max(...data.map(([x]) => x))],
+  y: [Math.min(...data.map(([, y]) => y)), Math.max(...data.map(([, y]) => y))],
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -25,11 +31,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 });
-
-const domain = {
-  x: [Math.min(...data.map(([x]) => x)), Math.max(...data.map(([x]) => x))],
-  y: [Math.min(...data.map(([, y]) => y)), Math.max(...data.map(([, y]) => y))],
-};
 
 const Graph = () => {
   const scaleX = scaleTime().domain(domain.x).range([0, width]);
@@ -40,7 +41,6 @@ const Graph = () => {
     .y(([, y]) => scaleY(y))
     .curve(shape.curveBasis)(data) as string;
   const path = parsePath(d);
-  const d2 = serializePath(path);
   return (
     <View style={styles.container}>
       <View>
@@ -58,7 +58,6 @@ const Graph = () => {
             strokeWidth={5}
             {...{ d }}
           />
-          <Path fill="transparent" stroke="red" strokeWidth={5} d={d2} />
           <Path
             d={`${d}  L ${width} ${height} L 0 ${height}`}
             fill="url(#gradient)"
