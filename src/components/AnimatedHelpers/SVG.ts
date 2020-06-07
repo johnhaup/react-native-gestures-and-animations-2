@@ -1,7 +1,7 @@
 import parseSVG from "parse-svg-path";
 import absSVG from "abs-svg-path";
 import normalizeSVG from "normalize-svg-path";
-import { interpolate } from "react-native-reanimated";
+import { interpolate, Extrapolate } from "react-native-reanimated";
 
 import cubicBezierLength from "./bezier/CubicBezierLength";
 import { Vector } from "./Vector";

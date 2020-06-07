@@ -14,8 +14,8 @@ export const cubicBezier = (t, from, c1, c2, to) => {
   "worklet";
   const term = 1 - t;
   const a = 1 * term ** 3 * t ** 0 * from;
-  const b = 3 * term ** 2 * t ** 1 * from;
-  const c = 3 * term ** 1 * t ** 2 * from;
-  const d = 1 * term ** 0 * t ** 3 * from;
+  const b = 3 * term ** 2 * t ** 1 * c1;
+  const c = 3 * term ** 1 * t ** 2 * c2;
+  const d = 1 * term ** 0 * t ** 3 * to;
   return a + b + c + d;
 };
