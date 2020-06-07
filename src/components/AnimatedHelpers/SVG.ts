@@ -61,14 +61,10 @@ export const parsePath = (d: string): Path => {
 
 export const getPointAtLength = (path, length) => {
   "worklet";
-  const { start, end, from, to, c1, c2 } = path.curves.filter(
+  const { start, end, from, to, c1, c2 } = path.curves.find(
     (c) => length >= c.start && length <= c.end
   );
-  console.log({ start, end, from, to, c1, c2 });
-  const t = interpolate(length, {
-    inputRange: [start, end],
-    outputRange: [0, 1],
-  });
+  const t = interpolate(length, [start, end], [0, 1]);
   return {
     x: cubicBezier(t, from.x, c1.x, c2.x, to.x),
     y: cubicBezier(t, from.y, c1.y, c2.y, to.y),

@@ -39,19 +39,15 @@ const Cursor = ({ path }: CursorProps) => {
     },
     onActive: (event, ctx) => {
       const x = ctx.offsetX + event.translationX;
-      /*
-      console.log({ x, width, l: path.length });
       const length = interpolate(
         x,
         [0, width],
         [0, path.length],
         Extrapolate.CLAMP
       );
-      console.log({ length });
-      const point = getPointAtLength(path, length);
-      */
-      translate.x.value = ctx.offsetX + event.translationX;
-      translate.y.value = ctx.offsetY + event.translationY;
+      const { y } = getPointAtLength(path, length);
+      translate.x.value = x;
+      translate.y.value = y;
     },
   });
   const style = useTranslate(translate);
