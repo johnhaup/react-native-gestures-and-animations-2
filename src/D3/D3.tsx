@@ -3,7 +3,9 @@ import { View, Dimensions, StyleSheet } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
+
 import { parsePath } from "../components/AnimatedHelpers";
+import Cursor from "./Cursor";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -37,8 +39,8 @@ const Graph = () => {
     .line()
     .x(([x]) => scaleX(x))
     .y(([, y]) => scaleY(y))
-    .curve(shape.curveBasis)(data);
-  parsePath(d);
+    .curve(shape.curveBasis)(data) as string;
+  const path = parsePath(d);
   return (
     <View style={styles.container}>
       <View>
@@ -61,6 +63,7 @@ const Graph = () => {
             fill="url(#gradient)"
           />
         </Svg>
+        <Cursor {...{ path }} />
       </View>
     </View>
   );

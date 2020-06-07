@@ -11,12 +11,12 @@ type SVGMove = ["M", number, number];
 type SVGCurve = ["C", number, number, number, number, number, number];
 type SVGPath = [SVGMove, ...SVGCurve[]];
 
-interface Path {
+export interface Path {
   curves: BezierCurve[];
   length: number;
 }
 
-interface BezierCurve {
+export interface BezierCurve {
   from: Vector;
   to: Vector;
   c1: Vector;
@@ -64,6 +64,7 @@ export const getPointAtLength = (path, length) => {
   const { start, end, from, to, c1, c2 } = path.curves.filter(
     (c) => length >= c.start && length <= c.end
   );
+  console.log({ start, end, from, to, c1, c2 });
   const t = interpolate(length, {
     inputRange: [start, end],
     outputRange: [0, 1],
