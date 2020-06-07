@@ -25,10 +25,6 @@ export interface BezierCurve {
   end: number;
 }
 
-export const exhaustiveCheck = (command: never): never => {
-  throw new TypeError(`Unknown SVG Command: ${command}`);
-};
-
 export const parsePath = (d: string): Path => {
   let length = 0;
   const [move, ...rawCurves]: SVGPath = normalizeSVG(absSVG(parseSVG(d)));
@@ -59,12 +55,22 @@ export const parsePath = (d: string): Path => {
   };
 };
 
+export const serializePath = (path: Path) =>
+  path.curves
+    .map(
+      (c, index) =>
+        `${index === 0 ? `M${c.from.x},${c.from.y}` : ""}C${c.c1.x},${c.c1.y},${
+          c.c2.x
+        },${c.c2.y},${c.to.x},${c.to.y}`
+    )
+    .join("");
+
 export const getPointAtLength = (path, length) => {
   "worklet";
   const { start, end, from, to, c1, c2 } = path.curves.find(
     (c) => length >= c.start && length <= c.end
   );
-  const t = interpolate(length, [start, end], [0, 1]);
+  const t = interpolate(length, [start, end], [0, 1], Extrapolate.CLAMP);
   return {
     x: cubicBezier(t, from.x, c1.x, c2.x, to.x),
     y: cubicBezier(t, from.y, c1.y, c2.y, to.y),

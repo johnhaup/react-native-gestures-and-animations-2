@@ -16,12 +16,19 @@ import {
 import { useVector } from "../components/AnimatedHelpers/Vector";
 
 const { width } = Dimensions.get("window");
-const SIZE = 20;
+const CURSOR = 100;
 const styles = StyleSheet.create({
+  cursorContainer: {
+    width: CURSOR,
+    height: CURSOR,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(100, 200, 300, 0.4)",
+  },
   cursor: {
-    width: SIZE,
-    height: SIZE,
-    borderRadius: SIZE / 2,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     backgroundColor: "red",
   },
 });
@@ -31,7 +38,8 @@ interface CursorProps {
 }
 
 const Cursor = ({ path }: CursorProps) => {
-  const translate = useVector(0, 0);
+  const point = getPointAtLength(path, 100);
+  const translate = useVector(point.x, point.y);
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.offsetX = translate.x.value;
@@ -45,16 +53,19 @@ const Cursor = ({ path }: CursorProps) => {
         [0, path.length],
         Extrapolate.CLAMP
       );
+      console.log({ length, total: path.length, ratio: length / path.length });
       const { y } = getPointAtLength(path, length);
-      translate.x.value = x;
-      translate.y.value = y;
+      translate.x.value = x - CURSOR / 2;
+      translate.y.value = y - CURSOR / 2;
     },
   });
   const style = useTranslate(translate);
   return (
     <View style={StyleSheet.absoluteFill}>
       <PanGestureHandler {...{ onGestureEvent }}>
-        <Animated.View style={[styles.cursor, style]} />
+        <Animated.View style={[styles.cursorContainer, style]}>
+          <View style={styles.cursor} />
+        </Animated.View>
       </PanGestureHandler>
     </View>
   );
