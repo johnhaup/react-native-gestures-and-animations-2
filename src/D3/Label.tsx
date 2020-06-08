@@ -28,7 +28,7 @@ const getDate = (data, domain, x) => {
 
 const getPrice = (data, domain, y) => {
   "worklet";
-  const price = interpolate(y, [0, width], [domain.y[0], domain.y[1]]);
+  const price = interpolate(y, [width, 0], [domain.y[0], domain.y[1]]);
   return price;
 };
 
