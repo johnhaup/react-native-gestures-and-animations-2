@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 
 import { Button, Card, StyleGuide, cards } from "../components";
-import { mix, useTransition } from "../components/AnimatedHelpers";
+import { mix, useSpringTransition } from "../components/AnimatedHelpers";
 
 const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const origin = { x: -(width / 2 - StyleGuide.spacing * 2), y: 0 };
 
 const UseTransition = () => {
   const [toggled, setToggle] = useState(false);
-  const transition = useTransition(toggled, { duration: 400 });
+  const transition = useSpringTransition(toggled);
   return (
     <View style={styles.container}>
       {cards.slice(0, 3).map((card, index) => {

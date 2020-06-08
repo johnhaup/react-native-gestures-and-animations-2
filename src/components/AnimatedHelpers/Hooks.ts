@@ -12,7 +12,7 @@ export const useSpringTransition = (state: boolean | number, config) => {
   const value = useSharedValue(0);
   useEffect(() => {
     value.value = typeof state === "boolean" ? bin(state) : state;
-  }, [state, value.value]);
+  }, [state]);
   const transition = useDerivedValue(() => {
     return withSpring(value.value, config);
   });
@@ -26,7 +26,7 @@ export const useTransition = (
   const value = useSharedValue(0);
   useEffect(() => {
     value.value = typeof state === "boolean" ? bin(state) : state;
-  }, [state, value.value]);
+  }, [state]);
   const transition = useDerivedValue(() => {
     return withTiming(value.value, config);
   });
