@@ -3,7 +3,7 @@ import { View, Dimensions, StyleSheet } from "react-native";
 import { useDerivedValue, interpolate } from "react-native-reanimated";
 
 import { Vector } from "../components/AnimatedHelpers/Vector";
-import { ReText } from "../components/AnimatedHelpers";
+import { ReText, round } from "../components/AnimatedHelpers";
 import { StyleGuide } from "../components";
 
 const { width } = Dimensions.get("window");
@@ -20,7 +20,10 @@ const styles = StyleSheet.create({
 const getDate = (data, domain, x) => {
   "worklet";
   const date = interpolate(x, [0, width], [domain.x[0], domain.x[1]]);
-  return new Date(date);
+  const refDate = data.find(
+    ([d], index) => d > date && (!!data[index + 1] || data[index + 1] < date)
+  )[0];
+  return new Date(refDate);
 };
 
 const getPrice = (data, domain, y) => {
@@ -35,36 +38,19 @@ interface LabelProps {
   translate: Vector;
 }
 
-const formatMoney = (amount, decimalCount, decimal, thousands) => {
-  "worklet";
-  decimalCount = Math.abs(decimalCount);
-  decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-  const negativeSign = amount < 0 ? "-" : "";
-
-  let i = `${Math.abs(amount).toFixed(0)}`;
-  let j = i.length > 3 ? i.length % 3 : 0;
-
-  return (
-    negativeSign +
-    (j ? i.substr(0, j) + thousands : "") +
-    i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) +
-    (decimalCount
-      ? decimal +
-        Math.abs(amount - i)
-          .toFixed(decimalCount)
-          .slice(2)
-      : "")
-  );
-};
-
 const Label = ({ domain, data, translate }: LabelProps) => {
   const date = useDerivedValue(() => {
     const d = getDate(data, domain, translate.x.value);
-    return d.toLocaleString();
+    return d.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   });
   const price = useDerivedValue(() => {
     const p = getPrice(data, domain, translate.y.value);
-    return `$ ${formatMoney(p, 2, ".", ",")}`;
+    return `$ ${round(p, 2).toLocaleString("en-US", { currency: "USD" })}`;
   });
   return (
     <View>

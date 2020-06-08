@@ -19,3 +19,9 @@ export const cubicBezier = (t, from, c1, c2, to) => {
   const d = 1 * term ** 0 * t ** 3 * to;
   return a + b + c + d;
 };
+
+export const round = (value, precision = 0) => {
+  "worklet";
+  const p = Math.pow(10, precision);
+  return Math.round(value * p) / p;
+};
