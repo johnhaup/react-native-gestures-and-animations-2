@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet, Text } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
 import { parsePath } from "../components/AnimatedHelpers";
+import { useVector } from "../components/AnimatedHelpers/Vector";
 import Cursor from "./Cursor";
+import Label from "./Label";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -33,6 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const Graph = () => {
+  const translate = useVector(0, 0);
   const scaleX = scaleTime().domain(domain.x).range([0, width]);
   const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
   const d = shape
@@ -43,6 +46,7 @@ const Graph = () => {
   const path = parsePath(d);
   return (
     <View style={styles.container}>
+      <Label {...{ data, domain, translate }} />
       <View>
         <Svg {...{ width, height }}>
           <Defs>
@@ -63,7 +67,7 @@ const Graph = () => {
             fill="url(#gradient)"
           />
         </Svg>
-        <Cursor {...{ path }} />
+        <Cursor {...{ path, translate }} />
       </View>
     </View>
   );

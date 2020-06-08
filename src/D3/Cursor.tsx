@@ -4,6 +4,7 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
+  useDerivedValue,
   Extrapolate,
   interpolate,
   useAnimatedStyle,
@@ -14,6 +15,7 @@ import {
   getPointAtLength,
   withDecay,
 } from "../components/AnimatedHelpers";
+import { Vector } from "../components/AnimatedHelpers/Vector";
 
 const { width } = Dimensions.get("window");
 const CURSOR = 100;
@@ -37,9 +39,10 @@ const styles = StyleSheet.create({
 
 interface CursorProps {
   path: Path;
+  translate: Vector;
 }
 
-const Cursor = ({ path }: CursorProps) => {
+const Cursor = ({ path, translate }: CursorProps) => {
   const length = useSharedValue(0);
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
@@ -69,12 +72,16 @@ const Cursor = ({ path }: CursorProps) => {
 
   const style = useAnimatedStyle(() => {
     const { x, y } = getPointAtLength(path, length.value);
-    const translateX = x - CURSOR / 2;
-    const translateY = y - CURSOR / 2;
+    translate.x.value = x - CURSOR / 2;
+    translate.y.value = y - CURSOR / 2;
     return {
-      transform: [{ translateX }, { translateY }],
+      transform: [
+        { translateX: translate.x.value },
+        { translateY: translate.y.value },
+      ],
     };
   });
+
   return (
     <View style={StyleSheet.absoluteFill}>
       <PanGestureHandler {...{ onGestureEvent }}>

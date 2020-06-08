@@ -17,7 +17,7 @@ const AppNavigator = () => (
         name="Examples"
         component={Examples}
         options={{
-          title: "Reanimated 2 Examples",
+          title: "Learn Reanimated 2",
         }}
       />
       <Stack.Screen
