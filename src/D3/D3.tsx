@@ -4,7 +4,7 @@ import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
-import { parsePath, serializePath } from "../components/AnimatedHelpers";
+import { parsePath } from "../components/AnimatedHelpers";
 import Cursor from "./Cursor";
 
 const { width } = Dimensions.get("window");

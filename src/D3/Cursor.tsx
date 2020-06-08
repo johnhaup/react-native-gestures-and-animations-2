@@ -6,14 +6,14 @@ import Animated, {
   useSharedValue,
   Extrapolate,
   interpolate,
+  useAnimatedStyle,
 } from "react-native-reanimated";
 
 import {
   Path,
   getPointAtLength,
-  useTranslate,
+  withDecay,
 } from "../components/AnimatedHelpers";
-import { useVector } from "../components/AnimatedHelpers/Vector";
 
 const { width } = Dimensions.get("window");
 const CURSOR = 100;
@@ -23,13 +23,15 @@ const styles = StyleSheet.create({
     height: CURSOR,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(100, 200, 300, 0.4)",
+    //backgroundColor: "rgba(100, 200, 300, 0.4)",
   },
   cursor: {
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: "red",
+    borderColor: "#367be2",
+    borderWidth: 4,
+    backgroundColor: "white",
   },
 });
 
@@ -38,27 +40,41 @@ interface CursorProps {
 }
 
 const Cursor = ({ path }: CursorProps) => {
-  const point = getPointAtLength(path, 100);
-  const translate = useVector(point.x - CURSOR / 2, point.y - CURSOR / 2);
+  const length = useSharedValue(0);
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
-      ctx.offsetX = translate.x.value;
-      ctx.offsetY = translate.y.value;
+      ctx.offsetX = interpolate(
+        length.value,
+        [0, path.length],
+        [0, width],
+        Extrapolate.CLAMP
+      );
     },
     onActive: (event, ctx) => {
       const x0 = ctx.offsetX + event.translationX;
-      const length = interpolate(
+      length.value = interpolate(
         x0,
         [0, width],
         [0, path.length],
         Extrapolate.CLAMP
       );
-      const { x, y } = getPointAtLength(path, length);
-      translate.x.value = x - CURSOR / 2;
-      translate.y.value = y - CURSOR / 2;
+    },
+    onEnd: ({ velocityX }, ctx) => {
+      length.value = withDecay({
+        velocity: velocityX,
+        clamp: [0, path.length],
+      });
     },
   });
-  const style = useTranslate(translate);
+
+  const style = useAnimatedStyle(() => {
+    const { x, y } = getPointAtLength(path, length.value);
+    const translateX = x - CURSOR / 2;
+    const translateY = y - CURSOR / 2;
+    return {
+      transform: [{ translateX }, { translateY }],
+    };
+  });
   return (
     <View style={StyleSheet.absoluteFill}>
       <PanGestureHandler {...{ onGestureEvent }}>
