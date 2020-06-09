@@ -1,17 +1,6 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  Platform,
-  Alert,
-} from "react-native";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  runOnUI,
-} from "react-native-reanimated";
+import { View, StyleSheet, Text, Platform } from "react-native";
+import { useSharedValue, runOnUI } from "react-native-reanimated";
 
 import { Button } from "../components";
 import { ReText } from "../components/AnimatedHelpers";

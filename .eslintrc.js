@@ -1,14 +1,8 @@
 module.exports = {
   root: true,
-  extends: "@react-native-community",
+  extends: "react-native-wcandillon",
   rules: {
-    quotes: [
-      "error",
-      "double",
-      {
-        avoidEscape: true,
-      },
-    ],
-    "react-native/no-inline-styles": 0,
+    "react/jsx-filename-extension": 0,
+    "@typescript-eslint/no-explicit-any": 0,
   },
 };

@@ -4,7 +4,6 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
-  useDerivedValue,
   Extrapolate,
   interpolate,
   useAnimatedStyle,
@@ -62,7 +61,7 @@ const Cursor = ({ path, translate }: CursorProps) => {
         Extrapolate.CLAMP
       );
     },
-    onEnd: ({ velocityX }, ctx) => {
+    onEnd: ({ velocityX }) => {
       length.value = withDecay({
         velocity: velocityX,
         clamp: [0, path.length],

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Dimensions, StyleSheet, Text } from "react-native";
+import { View, Dimensions, StyleSheet } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";

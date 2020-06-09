@@ -35,7 +35,7 @@ const Gesture = ({ width, height }: GestureProps) => {
       translateX.value = clamp(ctx.offsetX + event.translationX, 0, boundX);
       translateY.value = clamp(ctx.offsetY + event.translationY, 0, boundY);
     },
-    onEnd: ({ velocityX, velocityY }, ctx) => {
+    onEnd: ({ velocityX, velocityY }) => {
       translateX.value = withDecay({
         velocity: velocityX,
         clamp: [0, boundX],

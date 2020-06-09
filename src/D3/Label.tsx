@@ -20,15 +20,19 @@ const styles = StyleSheet.create({
 const getDate = (data, domain, x) => {
   "worklet";
   const date = interpolate(x, [0, width], [domain.x[0], domain.x[1]]);
-  const refDate = data.find(
-    ([d], index) => d > date && (!!data[index + 1] || data[index + 1] < date)
-  )[0];
+  const refDate = (data.find(
+    ([d], index) => d > date && (!!data[index + 1] || data[index + 1][0] < date)
+  ) || data[0])[0];
   return new Date(refDate);
 };
 
 const getPrice = (data, domain, y) => {
   "worklet";
   const price = interpolate(y, [width, 0], [domain.y[0], domain.y[1]]);
+  const refPrice = (data.find(
+    ([e, p], index) =>
+      p > price && (!!data[index + 1] || data[index + 1][1] < price)
+  ) || data[0])[1];
   return price;
 };
 
