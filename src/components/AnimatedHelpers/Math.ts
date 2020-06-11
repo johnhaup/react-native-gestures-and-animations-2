@@ -5,6 +5,11 @@ export const mix = (value, x, y) => {
   return x + value * (y - x);
 };
 
+export const fract = (x) => {
+  "worklet";
+  return x - Math.floor(x);
+};
+
 export const clamp = (value, lowerBound, upperBound) => {
   "worklet";
   return Math.min(Math.max(lowerBound, value), upperBound);

@@ -20,9 +20,10 @@ interface CursorProps {
   r: number;
   theta: any;
   strokeWidth: number;
+  stroke: any;
 }
 
-const Cursor = ({ r, theta, strokeWidth }: CursorProps) => {
+const Cursor = ({ r, theta, strokeWidth, stroke }: CursorProps) => {
   const center = { x: r, y: r };
   const x = useSharedValue(0);
   const y = useSharedValue(0);
@@ -55,6 +56,7 @@ const Cursor = ({ r, theta, strokeWidth }: CursorProps) => {
       center
     );
     return {
+      backgroundColor: stroke.value,
       transform: [
         {
           translateX,
@@ -79,7 +81,6 @@ const Cursor = ({ r, theta, strokeWidth }: CursorProps) => {
             borderRadius: strokeWidth / 2,
             borderColor: "white",
             borderWidth: 5,
-            backgroundColor: StyleGuide.palette.primary,
           },
           style,
         ]}
