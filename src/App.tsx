@@ -28,17 +28,17 @@ const AppNavigator = () => (
         }}
       />
       <Stack.Screen
-        name="Transitions"
-        component={Transitions}
-        options={{
-          title: "Transitions",
-        }}
-      />
-      <Stack.Screen
         name="PanGesture"
         component={PanGesture}
         options={{
           title: "PanGesture",
+        }}
+      />
+      <Stack.Screen
+        name="Transitions"
+        component={Transitions}
+        options={{
+          title: "Transitions",
         }}
       />
       <Stack.Screen
