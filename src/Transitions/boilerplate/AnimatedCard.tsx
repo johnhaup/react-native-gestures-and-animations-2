@@ -24,7 +24,6 @@ interface AnimatedCardProps {
 
 const AnimatedCard = ({ card, toggled, index }: AnimatedCardProps) => {
   const rotate = toggled ? ((index - 1) * Math.PI) / 6 : 0;
-
   return (
     <View
       style={[
@@ -33,7 +32,7 @@ const AnimatedCard = ({ card, toggled, index }: AnimatedCardProps) => {
           transform: [
             { translateX: origin },
             { rotate },
-            { translateY: -origin },
+            { translateX: -origin },
           ],
         },
       ]}
