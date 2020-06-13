@@ -1,6 +1,9 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  interpolate,
+} from "react-native-reanimated";
 import { mix } from "../../components/AnimatedHelpers";
 import { Card, Cards, StyleGuide } from "../../components";
 import { Dimensions } from "react-native";
@@ -17,28 +20,22 @@ const styles = StyleSheet.create({
 });
 
 interface AnimatedCardProps {
-  toggled: boolean;
+  transition: any;
   index: number;
   card: Cards;
 }
 
-const AnimatedCard = ({ card, toggled, index }: AnimatedCardProps) => {
-  const rotate = toggled ? ((index - 1) * Math.PI) / 6 : 0;
+const AnimatedCard = ({ card, transition, index }: AnimatedCardProps) => {
+  const style = useAnimatedStyle(() => {
+    const rotate = mix(transition.value, 0, ((index - 1) * Math.PI) / 6);
+    return {
+      transform: [{ translateX: origin }, { rotate }, { translateX: -origin }],
+    };
+  });
   return (
-    <View
-      style={[
-        styles.overlay,
-        {
-          transform: [
-            { translateX: origin },
-            { rotate },
-            { translateX: -origin },
-          ],
-        },
-      ]}
-    >
+    <Animated.View style={[styles.overlay, style]}>
       <Card {...{ card }} />
-    </View>
+    </Animated.View>
   );
 };
 
