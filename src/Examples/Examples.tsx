@@ -25,8 +25,8 @@ export const examples = [
     title: "⭕️ Circular Slider",
   },
   {
-    screen: "D3",
-    title: "📈 D3 Interactions",
+    screen: "Graph",
+    title: "📈 Graph Interactions",
   },
 ] as const;
 
