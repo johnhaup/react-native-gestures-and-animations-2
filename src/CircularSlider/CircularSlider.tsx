@@ -14,8 +14,11 @@ import Animated, {
 
 import Cursor from "./Cursor";
 import CircularProgress from "./CircularProgress";
-import { StyleGuide } from "../components";
-import { interpolateColor, canvas2Polar } from "../components/AnimatedHelpers";
+import { StyleGuide } from "../../components";
+import {
+  interpolateColor,
+  canvas2Polar,
+} from "../../components/AnimatedHelpers";
 
 const { width } = Dimensions.get("window");
 const size = width - 32;
@@ -40,7 +43,11 @@ const CircularSlider = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <Animated.View style={StyleSheet.absoluteFill}>
-          <CircularProgress strokeWidth={STROKE_WIDTH} {...{ r, theta }} />
+          <CircularProgress
+            strokeWidth={STROKE_WIDTH}
+            {...{ r }}
+            {...{ theta }}
+          />
         </Animated.View>
         <Cursor
           strokeWidth={STROKE_WIDTH}

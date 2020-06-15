@@ -1,17 +1,14 @@
 import * as React from "react";
-import { StyleSheet, processColor } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedGestureHandler,
-  useSharedValue,
   useAnimatedStyle,
-  useDerivedValue,
 } from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import {
   canvas2Polar,
   polar2Canvas,
   clamp,
-  interpolateColor,
 } from "../components/AnimatedHelpers";
 import { StyleGuide } from "../components";
 
@@ -19,56 +16,50 @@ const THRESHOLD = 0.001;
 
 interface CursorProps {
   r: number;
-  theta: any;
   strokeWidth: number;
+  theta: any;
 }
 
-const Cursor = ({ r, theta, strokeWidth }: CursorProps) => {
+const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
   const center = { x: r, y: r };
-  const x = useSharedValue(0);
-  const y = useSharedValue(0);
-
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
-      ctx.offsetX = x.value;
-      ctx.offsetY = y.value;
+      ctx.offset = polar2Canvas(
+        {
+          theta: theta.value,
+          radius: r,
+        },
+        center
+      );
     },
     onActive: (event, ctx) => {
-      x.value = event.translationX + ctx.offsetX;
-      const acc = event.translationY + ctx.offsetY;
-      if (x.value > r) {
-        y.value =
-          theta.value < Math.PI
-            ? clamp(acc, 0, r - THRESHOLD)
-            : clamp(acc, r + THRESHOLD, 2 * r);
-      } else {
-        y.value = acc;
-      }
-      const value = canvas2Polar({ x: x.value, y: y.value }, center).theta;
-      theta.value = value < 0 ? value + 2 * Math.PI : value;
+      const { translationX, translationY } = event;
+      const x = ctx.offset.x + translationX;
+      const y1 = ctx.offset.y + translationY;
+      const y =
+        x < r
+          ? y1
+          : theta.value < Math.PI
+          ? clamp(y1, 0, r - THRESHOLD)
+          : clamp(y1, r, 2 * r);
+      const value = canvas2Polar({ x, y }, center).theta;
+      theta.value = value > 0 ? value : 2 * Math.PI + value;
     },
   });
   const style = useAnimatedStyle(() => {
     const { x: translateX, y: translateY } = polar2Canvas(
-      { theta: theta.value, radius: r },
+      {
+        theta: theta.value,
+        radius: r,
+      },
       center
     );
     return {
-      transform: [
-        {
-          translateX,
-        },
-        {
-          translateY,
-        },
-      ],
+      transform: [{ translateX }, { translateY }],
     };
   });
   return (
-    <PanGestureHandler
-      onHandlerStateChange={onGestureEvent}
-      {...{ onGestureEvent }}
-    >
+    <PanGestureHandler {...{ onGestureEvent }}>
       <Animated.View
         style={[
           {

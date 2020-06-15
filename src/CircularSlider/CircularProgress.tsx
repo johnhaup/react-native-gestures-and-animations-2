@@ -6,7 +6,7 @@ import Animated, {
   interpolate,
 } from "react-native-reanimated";
 import Svg, { Circle } from "react-native-svg";
-import { StyleGuide } from "../components";
+import { StyleGuide } from "../../components";
 
 const { PI } = Math;
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
