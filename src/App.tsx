@@ -6,7 +6,7 @@ import Examples from "./Examples";
 import PanGesture from "./PanGesture";
 import Transitions from "./Transitions";
 import CircularSlider from "./CircularSlider";
-import D3 from "./D3";
+import Graph from "./Graph";
 import Worklets from "./Worklets";
 
 const Stack = createStackNavigator<Routes>();
@@ -49,10 +49,10 @@ const AppNavigator = () => (
         }}
       />
       <Stack.Screen
-        name="D3"
-        component={D3}
+        name="Graph"
+        component={Graph}
         options={{
-          title: "D3",
+          title: "Graph",
         }}
       />
     </Stack.Navigator>
