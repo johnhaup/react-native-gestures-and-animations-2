@@ -11,19 +11,19 @@ import {
   canvas2Polar,
   polar2Canvas,
   clamp,
+  interpolateColor,
 } from "../../components/AnimatedHelpers";
-import { StyleGuide } from "../../Examplescomponents";
+import { StyleGuide } from "../../components";
 
 const THRESHOLD = 0.001;
 
 interface CursorProps {
   r: number;
-  theta: any;
   strokeWidth: number;
-  stroke: any;
 }
 
-const Cursor = ({ r, theta, strokeWidth, stroke }: CursorProps) => {
+const Cursor = ({ r, strokeWidth }: CursorProps) => {
+  const center = { x: r, y: r };
   return (
     <View
       style={[
@@ -34,6 +34,7 @@ const Cursor = ({ r, theta, strokeWidth, stroke }: CursorProps) => {
           borderRadius: strokeWidth / 2,
           borderColor: "white",
           borderWidth: 5,
+          backgroundColor: StyleGuide.palette.primary,
         },
       ]}
     />

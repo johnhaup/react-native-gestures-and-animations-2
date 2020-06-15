@@ -173,6 +173,7 @@ const interpolateColorsRGB = (value, inputRange, colors) => {
     colors.map((c) => opacity(c)),
     Extrapolate.CLAMP
   );
+  console.log({ r, g, b, a });
   return color(r, g, b, a);
 };
 
@@ -180,7 +181,7 @@ export const interpolateColor = (
   value,
   inputRange,
   rawOutputRange,
-  colorSpace
+  colorSpace = "rgb"
 ) => {
   "worklet";
   const outputRange = rawOutputRange.map((c) =>

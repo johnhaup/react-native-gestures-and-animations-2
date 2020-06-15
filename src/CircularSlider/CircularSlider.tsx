@@ -15,12 +15,13 @@ import Animated, {
 import Cursor from "./Cursor";
 import CircularProgress from "./CircularProgress";
 import { StyleGuide } from "../components";
-import { interpolateColor } from "../components/AnimatedHelpers";
+import { interpolateColor, canvas2Polar } from "../components/AnimatedHelpers";
 
 const { width } = Dimensions.get("window");
 const size = width - 32;
 const STROKE_WIDTH = 40;
 const r = PixelRatio.roundToNearestPixel(size / 2);
+const defaultTheta = canvas2Polar({ x: 0, y: 0 }, { x: r, y: r }).theta;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -34,28 +35,17 @@ const styles = StyleSheet.create({
 });
 
 const CircularSlider = () => {
-  const theta = useSharedValue(0);
-  const stroke = useDerivedValue(() => {
-    const color = interpolateColor(
-      theta.value,
-      [0, Math.PI, 2 * Math.PI],
-      [4294916228, 4281894143, 4281925555]
-    );
-    return color;
-  });
+  const theta = useSharedValue(defaultTheta);
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <Animated.View style={StyleSheet.absoluteFill}>
-          <CircularProgress
-            strokeWidth={STROKE_WIDTH}
-            {...{ stroke, r, theta }}
-          />
+          <CircularProgress strokeWidth={STROKE_WIDTH} {...{ r, theta }} />
         </Animated.View>
         <Cursor
           strokeWidth={STROKE_WIDTH}
           r={r - STROKE_WIDTH / 2}
-          {...{ theta, stroke }}
+          {...{ theta }}
         />
       </View>
     </View>

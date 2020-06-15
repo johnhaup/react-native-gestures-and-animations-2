@@ -15,20 +15,13 @@ interface CircularProgressProps {
   theta: Animated.Node<number>;
   r: number;
   strokeWidth: number;
-  stroke: any;
 }
 
-const CircularProgress = ({
-  stroke,
-  theta,
-  r,
-  strokeWidth,
-}: CircularProgressProps) => {
+const CircularProgress = ({ theta, r, strokeWidth }: CircularProgressProps) => {
   const radius = r - strokeWidth / 2;
   const circumference = radius * 2 * PI;
   const props = useAnimatedProps(() => {
     return {
-      stroke: stroke.value,
       strokeDashoffset: theta.value * radius,
     };
   });
@@ -48,6 +41,7 @@ const CircularProgress = ({
         cy={r}
         fill="transparent"
         r={radius}
+        stroke={StyleGuide.palette.primary}
         strokeDasharray={`${circumference}, ${circumference}`}
         {...{ strokeWidth }}
       />

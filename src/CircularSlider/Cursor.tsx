@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, processColor } from "react-native";
 import Animated, {
   useAnimatedGestureHandler,
   useSharedValue,
@@ -11,6 +11,7 @@ import {
   canvas2Polar,
   polar2Canvas,
   clamp,
+  interpolateColor,
 } from "../components/AnimatedHelpers";
 import { StyleGuide } from "../components";
 
@@ -20,13 +21,13 @@ interface CursorProps {
   r: number;
   theta: any;
   strokeWidth: number;
-  stroke: any;
 }
 
-const Cursor = ({ r, theta, strokeWidth, stroke }: CursorProps) => {
+const Cursor = ({ r, theta, strokeWidth }: CursorProps) => {
   const center = { x: r, y: r };
   const x = useSharedValue(0);
   const y = useSharedValue(0);
+
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.offsetX = x.value;
@@ -43,20 +44,16 @@ const Cursor = ({ r, theta, strokeWidth, stroke }: CursorProps) => {
       } else {
         y.value = acc;
       }
+      const value = canvas2Polar({ x: x.value, y: y.value }, center).theta;
+      theta.value = value < 0 ? value + 2 * Math.PI : value;
     },
-  });
-  const polar = useDerivedValue(() => {
-    const value = canvas2Polar({ x: x.value, y: y.value }, center).theta;
-    theta.value = value < 0 ? value + 2 * Math.PI : value;
-    return value;
   });
   const style = useAnimatedStyle(() => {
     const { x: translateX, y: translateY } = polar2Canvas(
-      { theta: polar.value, radius: r },
+      { theta: theta.value, radius: r },
       center
     );
     return {
-      backgroundColor: stroke.value,
       transform: [
         {
           translateX,
@@ -81,6 +78,7 @@ const Cursor = ({ r, theta, strokeWidth, stroke }: CursorProps) => {
             borderRadius: strokeWidth / 2,
             borderColor: "white",
             borderWidth: 5,
+            backgroundColor: StyleGuide.palette.primary,
           },
           style,
         ]}

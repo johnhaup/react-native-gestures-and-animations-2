@@ -8,20 +8,17 @@ import Animated, {
 import Svg, { Circle } from "react-native-svg";
 import { StyleGuide } from "../../components";
 
+const { PI } = Math;
+
 interface CircularProgressProps {
   theta: Animated.Node<number>;
   r: number;
   strokeWidth: number;
-  stroke: any;
 }
 
-const CircularProgress = ({
-  stroke,
-  theta,
-  r,
-  strokeWidth,
-}: CircularProgressProps) => {
+const CircularProgress = ({ theta, r, strokeWidth }: CircularProgressProps) => {
   const radius = r - strokeWidth / 2;
+  const circumference = radius * 2 * PI;
   return (
     <Svg style={StyleSheet.absoluteFill}>
       <Circle
@@ -37,6 +34,8 @@ const CircularProgress = ({
         cy={r}
         fill="transparent"
         r={radius}
+        stroke={StyleGuide.palette.primary}
+        strokeDasharray={`${circumference}, ${circumference}`}
         {...{ strokeWidth }}
       />
     </Svg>
