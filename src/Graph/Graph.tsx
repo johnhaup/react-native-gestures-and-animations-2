@@ -8,6 +8,7 @@ import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
 import { useVector } from "../components/AnimatedHelpers/Vector";
 import Cursor from "./Cursor";
 import Label from "./Label";
+import { useSharedValue } from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -43,12 +44,12 @@ const styles = StyleSheet.create({
   },
 });
 
+// <Label {...{ data, domain, translate }} />
+
 const Graph = () => {
-  const { x, y } = getPointAtLength(path, 0);
-  const translate = useVector(x, y);
+  const length = useSharedValue(0);
   return (
     <View style={styles.container}>
-      <Label {...{ data, domain, translate }} />
       <View>
         <Svg {...{ width, height }}>
           <Defs>
@@ -69,7 +70,7 @@ const Graph = () => {
             fill="url(#gradient)"
           />
         </Svg>
-        <Cursor {...{ path, translate }} />
+        <Cursor {...{ path, length }} />
       </View>
     </View>
   );

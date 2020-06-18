@@ -38,44 +38,38 @@ const styles = StyleSheet.create({
 
 interface CursorProps {
   path: Path;
-  translate: Vector;
+  length: any;
 }
 
-const Cursor = ({ path, translate }: CursorProps) => {
-  const length = useSharedValue(0);
+const Cursor = ({ path, length }: CursorProps) => {
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
-      ctx.offsetX = translate.x.value;
+      ctx.offset = length.value;
     },
     onActive: (event, ctx) => {
-      const x0 = ctx.offsetX + event.translationX;
-      length.value = interpolate(
-        x0,
-        [0, width],
-        [0, path.length],
-        Extrapolate.CLAMP
-      );
-      const { x, y } = getPointAtLength(path, length.value);
-      translate.x.value = x - CURSOR / 2;
-      translate.y.value = y - CURSOR / 2;
+      length.value =
+        ctx.offset +
+        interpolate(
+          event.translationX,
+          [0, width],
+          [0, path.length],
+          Extrapolate.CLAMP
+        );
     },
     onEnd: ({ velocityX }) => {
       length.value = withDecay({
         velocity: velocityX,
         clamp: [0, path.length],
       });
-      const { x, y } = getPointAtLength(path, length.value);
-      translate.x.value = x - CURSOR / 2;
-      translate.y.value = y - CURSOR / 2;
     },
   });
 
   const style = useAnimatedStyle(() => {
+    const { x, y } = getPointAtLength(path, length.value);
+    const translateX = x - CURSOR / 2;
+    const translateY = y - CURSOR / 2;
     return {
-      transform: [
-        { translateX: translate.x.value },
-        { translateY: translate.y.value },
-      ],
+      transform: [{ translateX }, { translateY }],
     };
   });
 
