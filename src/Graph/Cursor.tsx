@@ -45,12 +45,7 @@ const Cursor = ({ path, translate }: CursorProps) => {
   const length = useSharedValue(0);
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
-      ctx.offsetX = interpolate(
-        length.value,
-        [0, path.length],
-        [0, width],
-        Extrapolate.CLAMP
-      );
+      ctx.offsetX = translate.x.value;
     },
     onActive: (event, ctx) => {
       const x0 = ctx.offsetX + event.translationX;
