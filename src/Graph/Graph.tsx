@@ -4,7 +4,7 @@ import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
-import { parsePath } from "../components/AnimatedHelpers";
+import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
 import { useVector } from "../components/AnimatedHelpers/Vector";
 import Cursor from "./Cursor";
 import Label from "./Label";
@@ -25,6 +25,15 @@ const domain = {
   y: [Math.min(...data.map(([, y]) => y)), Math.max(...data.map(([, y]) => y))],
 };
 
+const scaleX = scaleTime().domain(domain.x).range([0, width]);
+const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
+const d = shape
+  .line()
+  .x(([x]) => scaleX(x))
+  .y(([, y]) => scaleY(y))
+  .curve(shape.curveBasis)(data) as string;
+const path = parsePath(d);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,15 +44,8 @@ const styles = StyleSheet.create({
 });
 
 const Graph = () => {
-  const translate = useVector(0, 0);
-  const scaleX = scaleTime().domain(domain.x).range([0, width]);
-  const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
-  const d = shape
-    .line()
-    .x(([x]) => scaleX(x))
-    .y(([, y]) => scaleY(y))
-    .curve(shape.curveBasis)(data) as string;
-  const path = parsePath(d);
+  const { x, y } = getPointAtLength(path, 0);
+  const translate = useVector(x, y);
   return (
     <View style={styles.container}>
       <Label {...{ data, domain, translate }} />
