@@ -30,24 +30,29 @@ const domain = {
   y: [Math.min(...data.map(([, y]) => y)), Math.max(...data.map(([, y]) => y))],
 };
 
+const range = {
+  x: [0, width],
+  y: [height, 0],
+};
+
 const scaleX = (v) => {
   "worklet";
-  return interpolate(v, domain.x, [0, width], Extrapolate.CLAMP);
+  return interpolate(v, domain.x, range.x, Extrapolate.CLAMP);
 };
 
 const scaleXInvert = (x) => {
   "worklet";
-  return interpolate(x, [0, width], domain.x, Extrapolate.CLAMP);
+  return interpolate(x, range.x, domain.x, Extrapolate.CLAMP);
 };
 
 const scaleY = (v) => {
   "worklet";
-  return interpolate(v, domain.y, [height, 0], Extrapolate.CLAMP);
+  return interpolate(v, domain.y, range.y, Extrapolate.CLAMP);
 };
 
 const scaleYInvert = (y) => {
   "worklet";
-  return interpolate(y, [height, 0], domain.y, Extrapolate.CLAMP);
+  return interpolate(y, range.y, domain.y, Extrapolate.CLAMP);
 };
 
 //const scaleX = scaleTime().domain(domain.x).range([0, width]);

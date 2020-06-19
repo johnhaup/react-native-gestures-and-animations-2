@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
-import { useDerivedValue, interpolate } from "react-native-reanimated";
+import { View, StyleSheet } from "react-native";
+import { useDerivedValue } from "react-native-reanimated";
 
 import { Vector } from "../components/AnimatedHelpers/Vector";
 import { ReText, round } from "../components/AnimatedHelpers";
