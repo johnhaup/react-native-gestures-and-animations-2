@@ -9,12 +9,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-import {
-  Path,
-  getPointAtLength,
-  withDecay,
-} from "../components/AnimatedHelpers";
-import { Vector } from "../components/AnimatedHelpers/Vector";
+import { Path, withDecay } from "../components/AnimatedHelpers";
 
 const { width } = Dimensions.get("window");
 const CURSOR = 100;
@@ -39,6 +34,7 @@ const styles = StyleSheet.create({
 interface CursorProps {
   path: Path;
   length: any;
+  point: any;
 }
 
 const Cursor = ({ path, length, point }: CursorProps) => {

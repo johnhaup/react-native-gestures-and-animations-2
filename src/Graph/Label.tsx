@@ -6,7 +6,6 @@ import { Vector } from "../components/AnimatedHelpers/Vector";
 import { ReText, round } from "../components/AnimatedHelpers";
 import { StyleGuide } from "../components";
 
-const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   date: {
     ...StyleGuide.typography.title3,
@@ -17,45 +16,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-const getDate = (data, domain, x) => {
-  "worklet";
-  try {
-    const date = interpolate(x, [0, width], [domain.x[0], domain.x[1]]);
-    const refDate = (data.find(
-      ([d], index) =>
-        d > date && (!!data[index + 1] || data[index + 1][0] < date)
-    ) || data[0])[0];
-    return new Date(refDate);
-  } catch (e) {
-    console.log({ e });
-    return new Date();
-  }
-};
-
-const getPrice = (data, domain, y) => {
-  "worklet";
-  try {
-    const price = interpolate(y, [width, 0], [domain.y[0], domain.y[1]]);
-    const refPrice = (data.find(
-      ([e, p], index) =>
-        p > price && (!!data[index + 1] || data[index + 1][1] < price)
-    ) || data[0])[1];
-    return price;
-  } catch (e) {
-    console.log({ e });
-    return 0;
-  }
-};
 
 interface LabelProps {
-  domain: Vector<[number, number]>;
-  data: [number, number][];
-  point: { value: Vector<number> };
+  value: { value: Vector<number> };
 }
 
-const Label = ({ domain, data, point }: LabelProps) => {
+const Label = ({ value }: LabelProps) => {
   const date = useDerivedValue(() => {
-    const d = getDate(data, domain, point.value.x);
+    const d = new Date(value.value.x);
     return d.toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
@@ -64,7 +32,7 @@ const Label = ({ domain, data, point }: LabelProps) => {
     });
   });
   const price = useDerivedValue(() => {
-    const p = getPrice(data, domain, point.value.y);
+    const p = value.value.y;
     return `$ ${round(p, 2).toLocaleString("en-US", { currency: "USD" })}`;
   });
   return (

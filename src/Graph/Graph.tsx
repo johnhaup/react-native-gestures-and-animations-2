@@ -7,7 +7,12 @@ import * as shape from "d3-shape";
 import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
 import Cursor from "./Cursor";
 import Label from "./Label";
-import { useSharedValue, useDerivedValue } from "react-native-reanimated";
+import {
+  useSharedValue,
+  useDerivedValue,
+  interpolate,
+  Extrapolate,
+} from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -25,8 +30,29 @@ const domain = {
   y: [Math.min(...data.map(([, y]) => y)), Math.max(...data.map(([, y]) => y))],
 };
 
-const scaleX = scaleTime().domain(domain.x).range([0, width]);
-const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
+const scaleX = (v) => {
+  "worklet";
+  return interpolate(v, domain.x, [0, width], Extrapolate.CLAMP);
+};
+
+const scaleXInvert = (x) => {
+  "worklet";
+  return interpolate(x, [0, width], domain.x, Extrapolate.CLAMP);
+};
+
+const scaleY = (v) => {
+  "worklet";
+  return interpolate(v, domain.y, [height, 0], Extrapolate.CLAMP);
+};
+
+const scaleYInvert = (y) => {
+  "worklet";
+  return interpolate(y, [height, 0], domain.y, Extrapolate.CLAMP);
+};
+
+//const scaleX = scaleTime().domain(domain.x).range([0, width]);
+//const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
+
 const d = shape
   .line()
   .x(([x]) => scaleX(x))
@@ -48,9 +74,15 @@ const Graph = () => {
   const point = useDerivedValue(() => {
     return getPointAtLength(path, length.value);
   });
+  const value = useDerivedValue(() => {
+    return {
+      x: scaleXInvert(point.value.x),
+      y: scaleYInvert(point.value.y),
+    };
+  });
   return (
     <View style={styles.container}>
-      <Label {...{ data, domain, point }} />
+      <Label {...{ data, value }} />
       <View>
         <Svg {...{ width, height }}>
           <Defs>
