@@ -22,7 +22,7 @@ interface LabelProps {
 
 const Label = ({ point }: LabelProps) => {
   const date = useDerivedValue(() => {
-    const d = new Date(point.value.date);
+    const d = new Date(point.value.data.x);
     return d.toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
@@ -31,7 +31,7 @@ const Label = ({ point }: LabelProps) => {
     });
   });
   const price = useDerivedValue(() => {
-    const p = point.value.price;
+    const p = point.value.data.y;
     return `$ ${round(p, 2).toLocaleString("en-US", { currency: "USD" })}`;
   });
   return (

@@ -78,13 +78,15 @@ const Graph = () => {
   const length = useSharedValue(0);
   const point = useDerivedValue(() => {
     const { x, y } = getPointAtLength(path, length.value);
-    const date = scaleXInvert(x);
-    const price = scaleYInvert(y);
     return {
-      x,
-      y,
-      date,
-      price,
+      coord: {
+        x,
+        y,
+      },
+      data: {
+        x: scaleXInvert(x),
+        y: scaleYInvert(y),
+      },
     };
   });
   return (
