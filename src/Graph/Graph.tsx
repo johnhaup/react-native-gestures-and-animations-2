@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
-import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
 import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
@@ -35,33 +34,20 @@ const range = {
   y: [height, 0],
 };
 
-const scaleX = (v) => {
+const scale = (v, domain, range) => {
   "worklet";
-  return interpolate(v, domain.x, range.x, Extrapolate.CLAMP);
+  return interpolate(v, domain, range, Extrapolate.CLAMP);
 };
 
-const scaleXInvert = (x) => {
+const scaleInvert = (y, domain, range) => {
   "worklet";
-  return interpolate(x, range.x, domain.x, Extrapolate.CLAMP);
+  return interpolate(y, range, domain, Extrapolate.CLAMP);
 };
-
-const scaleY = (v) => {
-  "worklet";
-  return interpolate(v, domain.y, range.y, Extrapolate.CLAMP);
-};
-
-const scaleYInvert = (y) => {
-  "worklet";
-  return interpolate(y, range.y, domain.y, Extrapolate.CLAMP);
-};
-
-//const scaleX = scaleTime().domain(domain.x).range([0, width]);
-//const scaleY = scaleLinear().domain(domain.y).range([height, 0]);
 
 const d = shape
   .line()
-  .x(([x]) => scaleX(x))
-  .y(([, y]) => scaleY(y))
+  .x(([x]) => scale(x, domain.x, range.x))
+  .y(([, y]) => scale(y, domain.y, range.y))
   .curve(shape.curveBasis)(data) as string;
 const path = parsePath(d);
 
@@ -84,8 +70,8 @@ const Graph = () => {
         y,
       },
       data: {
-        x: scaleXInvert(x),
-        y: scaleYInvert(y),
+        x: scaleInvert(x, domain.x, range.x),
+        y: scaleInvert(y, domain.y, range.y),
       },
     };
   });
