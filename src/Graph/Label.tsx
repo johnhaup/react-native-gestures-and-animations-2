@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useDerivedValue } from "react-native-reanimated";
 
-import { Vector } from "../components/AnimatedHelpers/Vector";
 import { ReText, round } from "../components/AnimatedHelpers";
 import { StyleGuide } from "../components";
 
@@ -18,12 +17,12 @@ const styles = StyleSheet.create({
 });
 
 interface LabelProps {
-  value: { value: Vector<number> };
+  point: any;
 }
 
-const Label = ({ value }: LabelProps) => {
+const Label = ({ point }: LabelProps) => {
   const date = useDerivedValue(() => {
-    const d = new Date(value.value.x);
+    const d = new Date(point.value.date);
     return d.toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
@@ -32,7 +31,7 @@ const Label = ({ value }: LabelProps) => {
     });
   });
   const price = useDerivedValue(() => {
-    const p = value.value.y;
+    const p = point.value.price;
     return `$ ${round(p, 2).toLocaleString("en-US", { currency: "USD" })}`;
   });
   return (

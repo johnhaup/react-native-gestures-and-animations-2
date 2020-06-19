@@ -77,17 +77,19 @@ const styles = StyleSheet.create({
 const Graph = () => {
   const length = useSharedValue(0);
   const point = useDerivedValue(() => {
-    return getPointAtLength(path, length.value);
-  });
-  const value = useDerivedValue(() => {
+    const { x, y } = getPointAtLength(path, length.value);
+    const date = scaleXInvert(x);
+    const price = scaleYInvert(y);
     return {
-      x: scaleXInvert(point.value.x),
-      y: scaleYInvert(point.value.y),
+      x,
+      y,
+      date,
+      price,
     };
   });
   return (
     <View style={styles.container}>
-      <Label {...{ data, value }} />
+      <Label {...{ data, point }} />
       <View>
         <Svg {...{ width, height }}>
           <Defs>
