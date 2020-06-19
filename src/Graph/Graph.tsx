@@ -5,10 +5,9 @@ import { scaleLinear, scaleTime } from "d3-scale";
 import * as shape from "d3-shape";
 
 import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
-import { useVector } from "../components/AnimatedHelpers/Vector";
 import Cursor from "./Cursor";
 import Label from "./Label";
-import { useSharedValue } from "react-native-reanimated";
+import { useSharedValue, useDerivedValue } from "react-native-reanimated";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -44,12 +43,14 @@ const styles = StyleSheet.create({
   },
 });
 
-// <Label {...{ data, domain, translate }} />
-
 const Graph = () => {
   const length = useSharedValue(0);
+  const point = useDerivedValue(() => {
+    return getPointAtLength(path, length.value);
+  });
   return (
     <View style={styles.container}>
+      <Label {...{ data, domain, point }} />
       <View>
         <Svg {...{ width, height }}>
           <Defs>

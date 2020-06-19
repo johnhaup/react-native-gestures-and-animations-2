@@ -39,12 +39,12 @@ const getPrice = (data, domain, y) => {
 interface LabelProps {
   domain: Vector<[number, number]>;
   data: [number, number][];
-  translate: Vector;
+  point: { value: Vector<number> };
 }
 
-const Label = ({ domain, data, translate }: LabelProps) => {
+const Label = ({ domain, data, point }: LabelProps) => {
   const date = useDerivedValue(() => {
-    const d = getDate(data, domain, translate.x.value);
+    const d = getDate(data, domain, point.value.x);
     return d.toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
@@ -53,7 +53,7 @@ const Label = ({ domain, data, translate }: LabelProps) => {
     });
   });
   const price = useDerivedValue(() => {
-    const p = getPrice(data, domain, translate.y.value);
+    const p = getPrice(data, domain, point.value.y);
     return `$ ${round(p, 2).toLocaleString("en-US", { currency: "USD" })}`;
   });
   return (
