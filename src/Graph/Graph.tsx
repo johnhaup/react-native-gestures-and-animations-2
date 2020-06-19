@@ -71,7 +71,7 @@ const Graph = () => {
             fill="url(#gradient)"
           />
         </Svg>
-        <Cursor {...{ path, length }} />
+        <Cursor {...{ path, length, point }} />
       </View>
     </View>
   );

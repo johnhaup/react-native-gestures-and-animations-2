@@ -41,7 +41,7 @@ interface CursorProps {
   length: any;
 }
 
-const Cursor = ({ path, length }: CursorProps) => {
+const Cursor = ({ path, length, point }: CursorProps) => {
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (event, ctx) => {
       ctx.offset = length.value;
@@ -65,7 +65,7 @@ const Cursor = ({ path, length }: CursorProps) => {
   });
 
   const style = useAnimatedStyle(() => {
-    const { x, y } = getPointAtLength(path, length.value);
+    const { x, y } = point.value;
     const translateX = x - CURSOR / 2;
     const translateY = y - CURSOR / 2;
     return {
