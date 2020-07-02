@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  Dimensions,
-  PixelRatio,
-  StyleSheet,
-  View,
-  processColor,
-} from "react-native";
-import Animated, {
-  useSharedValue,
-  useDerivedValue,
-  interpolate,
-} from "react-native-reanimated";
+import { Dimensions, PixelRatio, StyleSheet, View } from "react-native";
+import Animated, { useSharedValue } from "react-native-reanimated";
+
+import { canvas2Polar } from "../components/AnimatedHelpers/Coordinates";
 
 import Cursor from "./Cursor";
 import CircularProgress from "./CircularProgress";
-import { StyleGuide } from "../components";
-import { interpolateColor, canvas2Polar } from "../components/AnimatedHelpers";
 
 const { width } = Dimensions.get("window");
 const size = width - 32;

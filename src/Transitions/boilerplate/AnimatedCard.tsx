@@ -1,12 +1,9 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  interpolate,
-} from "react-native-reanimated";
+import { StyleSheet, Dimensions } from "react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+
 import { mix } from "../../components/AnimatedHelpers";
 import { Card, Cards, StyleGuide } from "../../components";
-import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 const origin = -(width / 2 - StyleGuide.spacing * 2);
@@ -20,7 +17,7 @@ const styles = StyleSheet.create({
 });
 
 interface AnimatedCardProps {
-  transition: any;
+  transition: Animated.SharedValue<number>;
   index: number;
   card: Cards;
 }

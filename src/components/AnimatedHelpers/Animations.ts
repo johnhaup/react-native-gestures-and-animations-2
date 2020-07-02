@@ -1,4 +1,12 @@
-export function withDecay(userConfig, callback) {
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+export function withDecay(
+  userConfig: {
+    clamp: [number, number];
+    velocity: number;
+    deceleration?: number;
+  },
+  callback?: () => void
+): number {
   "worklet";
 
   // TODO: not sure what should I return here
@@ -10,11 +18,13 @@ export function withDecay(userConfig, callback) {
     deceleration: 0.998,
   };
   if (userConfig) {
+    // @ts-ignore
     Object.keys(userConfig).forEach((key) => (config[key] = userConfig[key]));
   }
 
   const VELOCITY_EPS = 5;
 
+  // @ts-ignore
   function decay(animation, now) {
     const { lastTimestamp, initialVelocity, current, velocity } = animation;
 
@@ -33,10 +43,15 @@ export function withDecay(userConfig, callback) {
 
     let toValueIsReached = null;
 
+    // @ts-ignore
     if (Array.isArray(config.clamp)) {
+      // @ts-ignore
       if (initialVelocity < 0 && animation.current <= config.clamp[0]) {
+        // @ts-ignore
         toValueIsReached = config.clamp[0];
+        // @ts-ignore
       } else if (initialVelocity > 0 && animation.current >= config.clamp[1]) {
+        // @ts-ignore
         toValueIsReached = config.clamp[1];
       }
     }
@@ -50,15 +65,19 @@ export function withDecay(userConfig, callback) {
     }
   }
 
+  // @ts-ignore
   function start(animation, value, now, _previousAnimation) {
     animation.current = value;
     animation.lastTimestamp = now;
+    // @ts-ignore
     animation.initialVelocity = config.velocity;
   }
 
+  // @ts-ignore
   return {
     animation: decay,
     start,
+    // @ts-ignore
     velocity: config.velocity || 0,
     callback,
   };

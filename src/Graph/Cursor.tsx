@@ -3,13 +3,14 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedGestureHandler,
-  useSharedValue,
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
 
 import { Path, withDecay } from "../components/AnimatedHelpers";
+
+import { DataPoint } from "./Label";
 
 const { width } = Dimensions.get("window");
 const CURSOR = 100;
@@ -33,24 +34,27 @@ const styles = StyleSheet.create({
 
 interface CursorProps {
   path: Path;
-  length: any;
-  point: any;
+  length: Animated.SharedValue<number>;
+  point: Animated.SharedValue<DataPoint>;
 }
 
 const Cursor = ({ path, length, point }: CursorProps) => {
   const onGestureEvent = useAnimatedGestureHandler({
-    onStart: (event, ctx) => {
-      ctx.offset = length.value;
+    onStart: (_event, ctx) => {
+      ctx.offsetX = interpolate(
+        length.value,
+        [0, path.length],
+        [0, width],
+        Extrapolate.CLAMP
+      );
     },
     onActive: (event, ctx) => {
-      length.value =
-        ctx.offset +
-        interpolate(
-          event.translationX,
-          [0, width],
-          [0, path.length],
-          Extrapolate.CLAMP
-        );
+      length.value = interpolate(
+        ctx.offsetX + event.translationX,
+        [0, width],
+        [0, path.length],
+        Extrapolate.CLAMP
+      );
     },
     onEnd: ({ velocityX }) => {
       length.value = withDecay({
@@ -61,9 +65,9 @@ const Cursor = ({ path, length, point }: CursorProps) => {
   });
 
   const style = useAnimatedStyle(() => {
-    const { x, y } = point.value.coord;
-    const translateX = x - CURSOR / 2;
-    const translateY = y - CURSOR / 2;
+    const { coord } = point.value;
+    const translateX = coord.x - CURSOR / 2;
+    const translateY = coord.y - CURSOR / 2;
     return {
       transform: [{ translateX }, { translateY }],
     };

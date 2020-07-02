@@ -2,16 +2,17 @@ import React from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import Svg, { Path, Defs, Stop, LinearGradient } from "react-native-svg";
 import * as shape from "d3-shape";
-
-import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
-import Cursor from "./Cursor";
-import Label from "./Label";
 import {
   useSharedValue,
   useDerivedValue,
   interpolate,
   Extrapolate,
 } from "react-native-reanimated";
+
+import { parsePath, getPointAtLength } from "../components/AnimatedHelpers";
+
+import Cursor from "./Cursor";
+import Label from "./Label";
 
 const { width } = Dimensions.get("window");
 const height = width;
@@ -34,14 +35,14 @@ const range = {
   y: [height, 0],
 };
 
-const scale = (v, domain, range) => {
+const scale = (v: number, d: number[], r: number[]) => {
   "worklet";
-  return interpolate(v, domain, range, Extrapolate.CLAMP);
+  return interpolate(v, d, r, Extrapolate.CLAMP);
 };
 
-const scaleInvert = (y, domain, range) => {
+const scaleInvert = (y: number, d: number[], r: number[]) => {
   "worklet";
-  return interpolate(y, range, domain, Extrapolate.CLAMP);
+  return interpolate(y, r, d, Extrapolate.CLAMP);
 };
 
 const d = shape
@@ -63,15 +64,15 @@ const styles = StyleSheet.create({
 const Graph = () => {
   const length = useSharedValue(0);
   const point = useDerivedValue(() => {
-    const { x, y } = getPointAtLength(path, length.value);
+    const p = getPointAtLength(path, length.value);
     return {
       coord: {
-        x,
-        y,
+        x: p.x,
+        y: p.y,
       },
       data: {
-        x: scaleInvert(x, domain.x, range.x),
-        y: scaleInvert(y, domain.y, range.y),
+        x: scaleInvert(p.x, domain.x, range.x),
+        y: scaleInvert(p.y, domain.y, range.y),
       },
     };
   });

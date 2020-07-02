@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
+
 import {
   canvas2Polar,
   polar2Canvas,
@@ -17,13 +18,13 @@ const THRESHOLD = 0.001;
 interface CursorProps {
   r: number;
   strokeWidth: number;
-  theta: any;
+  theta: Animated.SharedValue<number>;
 }
 
 const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
   const center = { x: r, y: r };
   const onGestureEvent = useAnimatedGestureHandler({
-    onStart: (event, ctx) => {
+    onStart: (_event, ctx) => {
       ctx.offset = polar2Canvas(
         {
           theta: theta.value,
@@ -33,9 +34,8 @@ const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
       );
     },
     onActive: (event, ctx) => {
-      const { translationX, translationY } = event;
-      const x = ctx.offset.x + translationX;
-      const y1 = ctx.offset.y + translationY;
+      const x = ctx.offset.x + event.translationX;
+      const y1 = ctx.offset.y + event.translationY;
       const y =
         x < r
           ? y1
@@ -47,7 +47,7 @@ const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
     },
   });
   const style = useAnimatedStyle(() => {
-    const { x: translateX, y: translateY } = polar2Canvas(
+    const translation = polar2Canvas(
       {
         theta: theta.value,
         radius: r,
@@ -55,7 +55,7 @@ const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
       center
     );
     return {
-      transform: [{ translateX }, { translateY }],
+      transform: [{ translateX: translation.x }, { translateY: translation.y }],
     };
   });
   return (
