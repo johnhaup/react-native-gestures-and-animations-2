@@ -6,6 +6,7 @@ export type Routes = {
   Animations: undefined;
   CircularSlider: undefined;
   Graph: undefined;
+  DragToSort: undefined;
   DynamicSpring: undefined;
   Accordion: undefined;
 };

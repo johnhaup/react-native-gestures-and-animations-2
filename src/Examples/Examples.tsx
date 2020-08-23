@@ -37,6 +37,10 @@ export const examples = [
     title: "👨‍🔬 Dynamic Spring",
   },
   {
+    screen: "DragToSort",
+    title: "📤 Drag To Sort",
+  },
+  {
     screen: "Accordion",
     title: "🗺 Accordion",
   },

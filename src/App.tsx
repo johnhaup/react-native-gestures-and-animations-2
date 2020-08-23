@@ -9,6 +9,7 @@ import Transitions from "./Transitions";
 import CircularSlider from "./CircularSlider";
 import Graph from "./Graph";
 import Worklets from "./Worklets";
+import DragToSort from "./DragToSort";
 import DynamicSpring from "./DynamicSpring";
 import Animations from "./Animations";
 import Accordion from "./Accordion";
@@ -71,6 +72,13 @@ const AppNavigator = () => (
         component={DynamicSpring}
         options={{
           title: "Dynamic Spring",
+        }}
+      />
+      <Stack.Screen
+        name="DragToSort"
+        component={DragToSort}
+        options={{
+          title: "Drag to Sort",
         }}
       />
       <Stack.Screen
