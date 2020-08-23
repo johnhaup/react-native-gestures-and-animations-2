@@ -9,6 +9,7 @@ import Transitions from "./Transitions";
 import CircularSlider from "./CircularSlider";
 import Graph from "./Graph";
 import Worklets from "./Worklets";
+import DynamicSpring from "./DynamicSpring";
 import Animations from "./Animations";
 import Accordion from "./Accordion";
 
@@ -63,6 +64,13 @@ const AppNavigator = () => (
         component={Graph}
         options={{
           title: "Graph",
+        }}
+      />
+      <Stack.Screen
+        name="DynamicSpring"
+        component={DynamicSpring}
+        options={{
+          title: "Dynamic Spring",
         }}
       />
       <Stack.Screen

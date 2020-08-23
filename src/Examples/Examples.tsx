@@ -33,6 +33,10 @@ export const examples = [
     title: "📈 Graph Interactions",
   },
   {
+    screen: "DynamicSpring",
+    title: "👨‍🔬 Dynamic Spring",
+  },
+  {
     screen: "Accordion",
     title: "🗺 Accordion",
   },

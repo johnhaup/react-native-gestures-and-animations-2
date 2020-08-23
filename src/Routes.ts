@@ -6,5 +6,6 @@ export type Routes = {
   Animations: undefined;
   CircularSlider: undefined;
   Graph: undefined;
+  DynamicSpring: undefined;
   Accordion: undefined;
 };
