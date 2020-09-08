@@ -1,9 +1,11 @@
 /* eslint-disable no-bitwise */
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="Colors.d.ts"/>
+
 import { Platform } from "react-native";
 import { interpolate, Extrapolate } from "react-native-reanimated";
-//import processColor from "react-native-reanimated/src/reanimated2/Colors";
-
-import { clamp, fract, mix } from "./Math";
+import processColor from "react-native-reanimated/src/reanimated2/Colors";
+import { clamp, mix } from "react-native-redash";
 
 export type Color = string | number;
 export enum ColorSpace {
@@ -11,7 +13,10 @@ export enum ColorSpace {
   HSV,
 }
 
-const processColor = (_: string) => 0x000000ff;
+const fract = (v: number) => {
+  "worklet";
+  return v - Math.floor(v);
+};
 
 export const opacity = (c: number) => {
   "worklet";
