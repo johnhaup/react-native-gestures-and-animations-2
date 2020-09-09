@@ -5,9 +5,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { PanGestureHandler } from "react-native-gesture-handler";
-import { canvas2Polar, polar2Canvas, clamp } from "react-native-redash";
-
-import { StyleGuide } from "../components";
+import { canvas2Polar, polar2Canvas, clamp, Color } from "react-native-redash";
 
 const THRESHOLD = 0.001;
 
@@ -15,9 +13,10 @@ interface CursorProps {
   r: number;
   strokeWidth: number;
   theta: Animated.SharedValue<number>;
+  backgroundColor: Animated.SharedValue<Color>;
 }
 
-const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
+const Cursor = ({ r, strokeWidth, theta, backgroundColor }: CursorProps) => {
   const center = { x: r, y: r };
   const onGestureEvent = useAnimatedGestureHandler<{
     offset: { x: number; y: number };
@@ -55,6 +54,7 @@ const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
       center
     );
     return {
+      backgroundColor: backgroundColor.value,
       transform: [{ translateX: translation.x }, { translateY: translation.y }],
     };
   });
@@ -69,7 +69,6 @@ const Cursor = ({ r, strokeWidth, theta }: CursorProps) => {
             borderRadius: strokeWidth / 2,
             borderColor: "white",
             borderWidth: 5,
-            backgroundColor: StyleGuide.palette.primary,
           },
           style,
         ]}

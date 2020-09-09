@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import Animated, { useAnimatedProps } from "react-native-reanimated";
 import Svg, { Circle } from "react-native-svg";
+import { Color } from "react-native-redash";
 
 import { StyleGuide } from "../components";
 
@@ -12,13 +13,20 @@ interface CircularProgressProps {
   theta: Animated.SharedValue<number>;
   r: number;
   strokeWidth: number;
+  backgroundColor: Animated.SharedValue<Color>;
 }
 
-const CircularProgress = ({ theta, r, strokeWidth }: CircularProgressProps) => {
+const CircularProgress = ({
+  theta,
+  r,
+  strokeWidth,
+  backgroundColor,
+}: CircularProgressProps) => {
   const radius = r - strokeWidth / 2;
   const circumference = radius * 2 * PI;
   const props = useAnimatedProps(() => {
     return {
+      stroke: backgroundColor.value,
       strokeDashoffset: theta.value * radius,
     };
   });
