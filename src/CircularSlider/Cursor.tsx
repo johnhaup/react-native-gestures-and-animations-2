@@ -4,8 +4,11 @@ import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { PanGestureHandler } from "react-native-gesture-handler";
-import { canvas2Polar, polar2Canvas, clamp, Color } from "react-native-redash";
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
+import { canvas2Polar, polar2Canvas, clamp } from "react-native-redash";
 
 const THRESHOLD = 0.001;
 
@@ -13,14 +16,17 @@ interface CursorProps {
   r: number;
   strokeWidth: number;
   theta: Animated.SharedValue<number>;
-  backgroundColor: Animated.SharedValue<Color>;
+  backgroundColor: Animated.SharedValue<string | number>;
 }
 
 const Cursor = ({ r, strokeWidth, theta, backgroundColor }: CursorProps) => {
   const center = { x: r, y: r };
-  const onGestureEvent = useAnimatedGestureHandler<{
-    offset: { x: number; y: number };
-  }>({
+  const onGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {
+      offset: { x: number; y: number };
+    }
+  >({
     onStart: (_event, ctx) => {
       ctx.offset = polar2Canvas(
         {
@@ -59,7 +65,7 @@ const Cursor = ({ r, strokeWidth, theta, backgroundColor }: CursorProps) => {
     };
   });
   return (
-    <PanGestureHandler {...{ onGestureEvent }}>
+    <PanGestureHandler onGestureEvent={onGestureEvent}>
       <Animated.View
         style={[
           {
