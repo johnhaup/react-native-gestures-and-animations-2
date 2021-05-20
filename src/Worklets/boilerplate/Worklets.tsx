@@ -11,10 +11,14 @@ const styles = StyleSheet.create({
   },
 });
 
+const sayHello = () => {
+  console.log("Hello from the JS thread!");
+};
+
 const Worklets = () => {
   return (
     <View style={styles.container}>
-      <Button label="Say Hello" primary onPress={() => null} />
+      <Button label="Say Hello" primary onPress={() => sayHello()} />
     </View>
   );
 };
