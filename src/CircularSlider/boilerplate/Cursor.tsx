@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import {
   PanGestureHandler,
   PanGestureHandlerEventExtra,
+  PanGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedGestureHandler,
@@ -22,13 +23,15 @@ const Cursor = ({
   theta: Animated.SharedValue<number>;
 }) => {
   const center = { x: r, y: r };
-  const onGestureEvent = useAnimatedGestureHandler<{
-    // Note:  Newer version of reanimated 2 have a clean way to type gesture event and ctx
-    offset: {
-      x: number;
-      y: number;
-    };
-  }>({
+  const onGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {
+      offset: {
+        x: number;
+        y: number;
+      };
+    }
+  >({
     onStart: (_, ctx) => {
       ctx.offset = polar2Canvas(
         {
@@ -38,7 +41,7 @@ const Cursor = ({
         center
       );
     },
-    onActive: (event: PanGestureHandlerEventExtra, ctx) => {
+    onActive: (event, ctx) => {
       const { translationX, translationY } = event;
       const x = ctx.offset.x + translationX;
       const unclampedY = ctx.offset.y + translationY;

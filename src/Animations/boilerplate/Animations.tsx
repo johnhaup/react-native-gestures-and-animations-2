@@ -3,8 +3,8 @@ import { StyleSheet, View } from "react-native";
 import Animated, {
   useSharedValue,
   withTiming,
-  repeat,
   Easing,
+  withRepeat,
 } from "react-native-reanimated";
 import {
   animationParameter,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 const Timing = () => {
   const [play, setPlay] = useState(false);
   const paused = useSharedValue(!play);
-  const progress = useSharedValue<null | number>(null);
+  const progress = useSharedValue(0);
   return (
     <View style={styles.container}>
       <ChatBubble progress={progress} />
@@ -87,7 +87,7 @@ const Timing = () => {
           paused.value = !paused.value;
           if (progress.value === null) {
             progress.value = withPause(
-              repeat(
+              withRepeat(
                 withTiming(1, {
                   duration: 1000,
                   easing: Easing.inOut(Easing.ease),
