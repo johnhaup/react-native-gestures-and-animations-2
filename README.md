@@ -27,7 +27,7 @@ yarn start
 - [x] Custom Animations
 - [x] Circular Slider
 - [x] Graph Interactions
-- [ ] Swiping
+- [x] Swiping <-- ️‍🔥
 - [ ] Dynamic Spring
 - [ ] Drag to Sort
 - [ ] Cubic Bezier
