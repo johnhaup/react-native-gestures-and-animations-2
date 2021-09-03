@@ -1,5 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
+import {
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
+import { bin } from "react-native-redash";
 
 import { Button, StyleGuide, cards } from "../../components";
 
@@ -13,17 +19,37 @@ const styles = StyleSheet.create({
   },
 });
 
+const useSpring = (state: number | boolean) => {
+  const sharedValue = useSharedValue(0);
+
+  useEffect(() => {
+    sharedValue.value = typeof state === "number" ? state : bin(state);
+  }, [state, sharedValue]);
+
+  return useDerivedValue(() => {
+    return withSpring(sharedValue.value);
+  });
+};
+
 const UseTransition = () => {
-  const [toggled, setToggle] = useState(false);
+  // UI only
+  const uiToggled = useSharedValue(false);
+  const transition = useDerivedValue(() => {
+    return withSpring(bin(uiToggled.value));
+  });
+  // JS
+  // const [toggled, setToggle] = useState(false);
+  // const transition = useSpring(toggled);
+
   return (
     <View style={styles.container}>
       {cards.slice(0, 3).map((card, index) => (
-        <AnimatedCard key={card} {...{ index, card, toggled }} />
+        <AnimatedCard key={card} {...{ index, card, transition }} />
       ))}
       <Button
-        label={toggled ? "Reset" : "Start"}
+        label={true ? "Reset" : "Start"}
         primary
-        onPress={() => setToggle((prev) => !prev)}
+        onPress={() => (uiToggled.value = !uiToggled.value)}
       />
     </View>
   );

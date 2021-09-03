@@ -1,13 +1,35 @@
-# Learn Reanimated 2
+# start-react-native Reanimated v2
 
-## Installation
+Visit s[tart-react-native.dev](https://start-react-native.dev) to take the course.
 
-```sh
-$ yarn
+#### Installation
+
+```bash
+yarn
 ```
 
-## Start
+#### Start
 
+Requires [Expo CLI](https://docs.expo.dev/get-started/installation/)
+
+```bash
+yarn start
 ```
-$ yarn start
-```
+
+#### Lesson Syllabus
+
+- [x] The Hear of the Matter
+- [x] Development Setup
+- [x] Worklets and Shared Values
+- [x] Pan Gesture
+- [x] Transitions
+- [x] High-order Animations
+- [x] Custom Animations
+- [x] Circular Slider
+- [x] Graph Interactions
+- [ ] Swiping
+- [ ] Dynamic Spring
+- [ ] Drag to Sort
+- [ ] Cubic Bezier
+- [ ] Morphing Shapes
+- [ ] Colors
