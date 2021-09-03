@@ -2,13 +2,12 @@ import React from "react";
 import Animated, {
   useAnimatedGestureHandler,
   withDecay,
-  useSharedValue,
 } from "react-native-reanimated";
 import {
   PanGestureHandler,
   PanGestureHandlerGestureEvent,
 } from "react-native-gesture-handler";
-import { clamp } from "react-native-redash";
+import { clamp, Vector } from "react-native-redash";
 
 import { Card, Cards, CARD_WIDTH, CARD_HEIGHT } from "../../components";
 import { useTranslate } from "../../components/AnimatedHelpers";
@@ -16,13 +15,10 @@ import { useTranslate } from "../../components/AnimatedHelpers";
 interface DraggableCardProps {
   width: number;
   height: number;
+  vector: Vector<Animated.SharedValue<number>>;
 }
 
-const DraggableCard = ({ width, height }: DraggableCardProps) => {
-  const translate = {
-    x: useSharedValue(0),
-    y: useSharedValue(0),
-  };
+const DraggableCard = ({ width, height, vector }: DraggableCardProps) => {
   const boundX = width - CARD_WIDTH;
   const boundY = height - CARD_HEIGHT;
   const onGestureEvent = useAnimatedGestureHandler<
@@ -33,25 +29,25 @@ const DraggableCard = ({ width, height }: DraggableCardProps) => {
     }
   >({
     onStart: (_, ctx) => {
-      ctx.offsetX = translate.x.value;
-      ctx.offsetY = translate.y.value;
+      ctx.offsetX = vector.x.value;
+      ctx.offsetY = vector.y.value;
     },
     onActive: (event, ctx) => {
-      translate.x.value = clamp(ctx.offsetX + event.translationX, 0, boundX);
-      translate.y.value = clamp(ctx.offsetY + event.translationY, 0, boundY);
+      vector.x.value = clamp(ctx.offsetX + event.translationX, 0, boundX);
+      vector.y.value = clamp(ctx.offsetY + event.translationY, 0, boundY);
     },
     onEnd: ({ velocityX, velocityY }) => {
-      translate.x.value = withDecay({
+      vector.x.value = withDecay({
         velocity: velocityX,
         clamp: [0, boundX],
       });
-      translate.y.value = withDecay({
+      vector.y.value = withDecay({
         velocity: velocityY,
         clamp: [0, boundY],
       });
     },
   });
-  const style = useTranslate(translate);
+  const style = useTranslate(vector);
   return (
     <PanGestureHandler {...{ onGestureEvent }}>
       <Animated.View {...{ style }}>
