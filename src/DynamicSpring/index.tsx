@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, LayoutRectangle } from "react-native";
 
-import DynamicSpring from "./DynamicSpring";
+import DynamicSpring from "./boilerplate/DynamicSpring";
 
 const styles = StyleSheet.create({
   container: {

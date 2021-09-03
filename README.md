@@ -25,10 +25,10 @@ yarn start
 - [x] Transitions
 - [x] High-order Animations
 - [x] Custom Animations
-- [x] Circular Slider
-- [x] Graph Interactions
-- [x] Swiping <-- ️‍🔥
-- [ ] Dynamic Spring
+- [x] Circular Slider 🔥
+- [x] Graph Interactions 🔥
+- [x] Swiping 🔥
+- [x] Dynamic Spring
 - [ ] Drag to Sort
 - [ ] Cubic Bezier
 - [ ] Morphing Shapes
