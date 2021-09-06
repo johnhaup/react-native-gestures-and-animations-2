@@ -1,1 +1,1 @@
-export { default } from "./DragToSort";
+export { default } from "./boilerplate/DragToSort";

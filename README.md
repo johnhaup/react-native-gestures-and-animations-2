@@ -29,7 +29,7 @@ yarn start
 - [x] Graph Interactions 🔥
 - [x] Swiping 🔥
 - [x] Dynamic Spring
-- [ ] Drag to Sort
+- [x] Drag to Sort
 - [ ] Cubic Bezier
 - [ ] Morphing Shapes
 - [ ] Colors
