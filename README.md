@@ -30,6 +30,6 @@ yarn start
 - [x] Swiping 🔥
 - [x] Dynamic Spring
 - [x] Drag to Sort
-- [ ] Cubic Bezier
+- [x] Cubic Bezier
 - [ ] Morphing Shapes
 - [ ] Colors
