@@ -31,5 +31,5 @@ yarn start
 - [x] Dynamic Spring
 - [x] Drag to Sort
 - [x] Cubic Bezier
-- [ ] Morphing Shapes
+- [x] Morphing Shapes
 - [ ] Colors
