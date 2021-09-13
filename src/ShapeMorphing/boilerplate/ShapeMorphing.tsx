@@ -1,13 +1,19 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
 
 import Eye from "./Eye";
 import Mouth from "./Mouth";
-import Slider from "./Slider";
+import Slider, { SLIDER_WIDTH } from "./Slider";
 
 const bad = "#FDBEEB";
-//const normal = "#FDEEBE";
-//const good = "#BEFDE5";
+const normal = "#FDEEBE";
+const good = "#BEFDE5";
 
 const styles = StyleSheet.create({
   container: {
@@ -30,9 +36,24 @@ const styles = StyleSheet.create({
 });
 
 const PathMorphing = () => {
-  const progress = 0.5;
+  const translateX = useSharedValue(0);
+
+  const progress = useDerivedValue(() => {
+    return translateX.value / SLIDER_WIDTH;
+  });
+
+  const containerStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        progress.value,
+        [0, 0.5, 1],
+        [bad, normal, good]
+      ),
+    };
+  });
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, containerStyle]}>
       <View style={styles.face}>
         <View style={styles.eyes}>
           <Eye progress={progress} />
@@ -40,8 +61,8 @@ const PathMorphing = () => {
         </View>
         <Mouth progress={progress} />
       </View>
-      <Slider />
-    </View>
+      <Slider translateX={translateX} />
+    </Animated.View>
   );
 };
 
