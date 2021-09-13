@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedProps,
   useSharedValue,
 } from "react-native-reanimated";
+import { addCurve, createPath, serialize } from "react-native-redash";
 import Svg, { Line, Path, Circle } from "react-native-svg";
 
 import ControlPoint, { CONTROL_POINT_RADIUS } from "./ControlPoint";
@@ -44,9 +45,18 @@ const BezierCurves = () => {
   const c2x = useSharedValue(max);
   const c2y = useSharedValue(max);
 
-  const path = useAnimatedProps(() => ({
-    d: `M ${start.x} ${start.y} C ${c1x.value} ${c1y.value}, ${c2x.value} ${c2y.value}, ${end.x} ${end.y}`,
-  }));
+  const path = useAnimatedProps(() => {
+    const curve = createPath({ x: start.x, y: start.y });
+    addCurve(curve, {
+      c1: { x: c1x.value, y: c1y.value },
+      c2: { x: c2x.value, y: c2y.value },
+      to: { x: end.x, y: end.y },
+    });
+
+    return {
+      d: serialize(curve),
+    };
+  });
   const line1 = useAnimatedProps(() => ({
     x2: c1x.value,
     y2: c1y.value,
